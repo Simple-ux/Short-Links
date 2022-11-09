@@ -20,11 +20,9 @@ templates = Jinja2Templates(directory="templates")
 #редирект по сгенерированному адресу
 @app.get('/{link}')
 async def redirect(link: str):
-
     url_arr = open_Json()
 
     for j in url_arr:
-    
         if url_arr[j].split('/')[-1] == link:
             return RedirectResponse(j)
 
