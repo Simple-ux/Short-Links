@@ -20,7 +20,7 @@ templates = Jinja2Templates(directory="templates")
 #редирект по сгенерированному адресу
 @app.get('/{link}')
 async def redirect(link: str):
-    url_arr = open_Json()
+    url_arr = await open_Json()
 
     for j in url_arr:
         if url_arr[j].split('/')[-1] == link:
@@ -29,43 +29,43 @@ async def redirect(link: str):
     return RedirectResponse('/')
 
 # View
-@app.get('/', response_class=HTMLResponse)
+@app.get('/')
 async def main_view(request: Request):
-    return templates.TemplateResponse("index2.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 
 
-@app.post("/", response_class=HTMLResponse)
-async def get_url(request: Request, url: str = Form()):
-    return templates.TemplateResponse("res.html", {"request": request, "url": generate_url(url)})
+@app.post("/")
+async def get_url(request: Request, url: str = Form("")):
+    return templates.TemplateResponse("link_block.html", {"request": request, "url": await generate_url(url)})
 
 
-def open_Json():
+async def open_Json():
     with open('urls.json') as j:
         url_arr = json.load(j)
         return url_arr
 
 
-def generate_url(url):
+async def generate_url(url):
 
     # Проверка на сущестующий URL
-    url_arr = open_Json()
+    url_arr = await open_Json()
     for j in url_arr:
         if j == url:
             return url_arr[j]
     old_url = url
 
     # генерация уникального адреса
-    chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+    chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
     link = ''
 
-    for i in range(5):
+    for i in range(6):
         link += random.choice(chars)
     new_url = f"http://localhost:8000/{link}"
 
     # запись в файл
-    url_arr = open_Json()
+    url_arr = await open_Json()
     url_arr[old_url] = new_url
 
     with open('urls.json', 'w') as j:
