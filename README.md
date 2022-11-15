@@ -1,4 +1,4 @@
-Service for creating shortened links
+Service for creating shortened links on python FastAPI
 
 To run the application:
 1. move to main.py directory
