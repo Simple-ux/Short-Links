@@ -7,5 +7,5 @@ cd short_links/app
 ```
 2. run the app
 ``` shell
-uvicorn main:app --reload
+gunicorn example:app -w 4 -k uvicorn.workers.UvicornWorker
 ```
