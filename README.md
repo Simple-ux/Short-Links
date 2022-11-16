@@ -9,6 +9,8 @@ cd Short_Links
 ``` shell
 docker-compose up
 ```
+If you get error "permission denied [Errno 13]" run Docker Desktop as administrator
+
 ### or
 1. Move to main.py directory
 ``` shell
